@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import {
     Box, Typography, Paper, CircularProgress, Alert, Chip, Tooltip, Stack, MenuItem,
     Select, Divider, useTheme, TextField, TablePagination, InputAdornment, IconButton,
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Dialog, DialogContent,
+    DialogTitle, Button, LinearProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -17,9 +18,11 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DownloadIcon from '@mui/icons-material/Download';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../services/api';
 import { useNotification } from '../../contexts/NotificationContext';
+import { exportToCSV, generateFilename } from '../../utils/exportUtils';
 
 /**
  * Reusable LogTable component for displaying logs from any support table.
@@ -42,6 +45,12 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
 
     // Inline Editing State (Standard Table Replacement)
     const [editCell, setEditCell] = useState(null); // { id, field }
+
+    // CSV Export State
+    const [isExporting, setIsExporting] = useState(false);
+    const [exportProgress, setExportProgress] = useState(0);
+    const [exportedRows, setExportedRows] = useState(0);
+    const [totalExportRows, setTotalExportRows] = useState(0);
 
     // Memoized Filtering Logic (Status + Incharge + Search)
     const filteredData = useMemo(() => {
@@ -107,6 +116,53 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
     }, [data]);
 
     const distinctStatuses = ['Pending', 'Done', 'Need to update'];
+
+    // CSV Export Handler
+    const handleExportCSV = async () => {
+        try {
+            setIsExporting(true);
+            setExportProgress(0);
+            setExportedRows(0);
+            setTotalExportRows(filteredData.length);
+
+            const filename = generateFilename(type);
+
+            // Transform data to use sequential IDs (1, 2, 3...) instead of database IDs
+            const dataWithSequentialIds = filteredData.map((row, index) => ({
+                ...row,
+                id: index + 1  // Replace database ID with sequential number
+            }));
+
+            // Get the column order from the displayed columns (matching table order)
+            const columnOrder = columns.map(col => col.field);
+
+            await exportToCSV(
+                dataWithSequentialIds,
+                filename,
+                (current, total, progress) => {
+                    setExportedRows(current);
+                    setExportProgress(progress);
+                },
+                columnOrder  // Pass the column order to match table display
+            );
+
+            showNotification(
+                `Successfully exported ${filteredData.length} rows to ${filename}.csv`,
+                'success'
+            );
+        } catch (error) {
+            console.error('Export Error:', error);
+            showNotification(
+                `Failed to export: ${error.message}`,
+                'error'
+            );
+        } finally {
+            setIsExporting(false);
+            setExportProgress(0);
+            setExportedRows(0);
+            setTotalExportRows(0);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -521,6 +577,38 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                                 }}
                             />
                         )}
+
+                        <Tooltip title="Export visible data as CSV" arrow placement="top">
+                            <Button
+                                variant="contained"
+                                startIcon={<DownloadIcon />}
+                                onClick={handleExportCSV}
+                                disabled={isExporting || filteredData.length === 0}
+                                sx={{
+                                    background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+                                    color: 'white',
+                                    fontWeight: 800,
+                                    fontSize: '0.65rem',
+                                    height: 32,
+                                    px: 2,
+                                    borderRadius: '8px',
+                                    textTransform: 'uppercase',
+                                    boxShadow: '0 2px 8px rgba(25, 118, 210, 0.3)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        background: 'linear-gradient(135deg, #1565c0 0%, #0d47a1 100%)',
+                                        boxShadow: '0 4px 12px rgba(25, 118, 210, 0.4)',
+                                        transform: 'translateY(-1px)'
+                                    },
+                                    '&:disabled': {
+                                        background: 'rgba(0, 0, 0, 0.12)',
+                                        color: 'rgba(0, 0, 0, 0.26)'
+                                    }
+                                }}
+                            >
+                                Export CSV
+                            </Button>
+                        </Tooltip>
                     </Stack>
                 </Box>
             </Box>
@@ -783,6 +871,115 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                     </Table>
                 </TableContainer>
             </Paper>
+
+            {/* CSV Export Progress Dialog */}
+            <Dialog
+                open={isExporting}
+                maxWidth="sm"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        background: isDarkMode ? 'rgba(30, 30, 30, 0.98)' : 'rgba(255, 255, 255, 0.98)',
+                        backdropFilter: 'blur(10px)',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                    }
+                }}
+            >
+                <DialogTitle sx={{ pb: 1 }}>
+                    <Stack direction="row" spacing={1.5} alignItems="center">
+                        <DownloadIcon sx={{ fontSize: '1.5rem', color: 'primary.main' }} />
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                            Exporting CSV
+                        </Typography>
+                    </Stack>
+                </DialogTitle>
+                <DialogContent>
+                    <Box sx={{ py: 2 }}>
+                        {/* Progress Ring with Percentage */}
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3, position: 'relative' }}>
+                            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={exportProgress}
+                                    size={120}
+                                    thickness={4}
+                                    sx={{
+                                        color: 'primary.main',
+                                        '& .MuiCircularProgress-circle': {
+                                            strokeLinecap: 'round'
+                                        }
+                                    }}
+                                />
+                                <Box
+                                    sx={{
+                                        top: 0,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        position: 'absolute',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h4"
+                                        sx={{
+                                            fontWeight: 800,
+                                            color: 'primary.main'
+                                        }}
+                                    >
+                                        {exportProgress}%
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        {/* Linear Progress Bar */}
+                        <LinearProgress
+                            variant="determinate"
+                            value={exportProgress}
+                            sx={{
+                                height: 8,
+                                borderRadius: 4,
+                                mb: 2,
+                                bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                                '& .MuiLinearProgress-bar': {
+                                    borderRadius: 4,
+                                    background: 'linear-gradient(90deg, #1976d2 0%, #2196f3 100%)'
+                                }
+                            }}
+                        />
+
+                        {/* Status Text */}
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            sx={{
+                                color: 'text.secondary',
+                                fontWeight: 600,
+                                fontSize: '0.9rem'
+                            }}
+                        >
+                            Processing {exportedRows.toLocaleString()} of {totalExportRows.toLocaleString()} rows...
+                        </Typography>
+
+                        <Typography
+                            variant="caption"
+                            align="center"
+                            sx={{
+                                display: 'block',
+                                mt: 1,
+                                color: 'text.disabled',
+                                fontSize: '0.75rem'
+                            }}
+                        >
+                            Please wait while we prepare your CSV file
+                        </Typography>
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 }

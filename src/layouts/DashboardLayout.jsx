@@ -102,7 +102,6 @@ function DashboardLayout(props) {
         { text: 'Client Tracker', icon: <PeopleIcon />, path: '/client-tracker' },
         { text: 'Client Number Finder', icon: <SearchIcon />, path: '/contact-search' },
         { text: 'CAMS Support Logs', icon: <SupportAgentIcon />, path: '/support-logs' },
-        { text: 'Dashboard vs FS', icon: <AssessmentIcon />, path: '/dashboard-vs-fs' },
     ];
 
     const renderDrawer = (isMini) => (
@@ -319,6 +318,46 @@ function DashboardLayout(props) {
                         </ListItemButton>
                     </List>
                 </Collapse>
+
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                    <Tooltip title={isMini ? "Dashboard vs FS" : ""} placement="right">
+                        <ListItemButton
+                            selected={location.pathname === '/dashboard-vs-fs'}
+                            onClick={() => {
+                                if (mobileOpen) setMobileOpen(false);
+                                navigate('/dashboard-vs-fs');
+                            }}
+                            sx={{
+                                minHeight: !isMini ? 48 : 40,
+                                py: 0.5,
+                                justifyContent: !isMini ? 'initial' : 'center',
+                                px: !isMini ? 2.5 : 1.5,
+                                mb: 0.5,
+                                mx: !isMini ? 0 : 0.8,
+                                borderRadius: !isMini ? 0 : '12px',
+                                '&.Mui-selected': {
+                                    backgroundColor: (theme) => theme.palette.mode === 'light'
+                                        ? 'rgba(25, 118, 210, 0.08)'
+                                        : 'rgba(25, 118, 210, 0.15)',
+                                    borderRight: !isMini ? '4px solid #1976d2' : 'none',
+                                },
+                                transition: 'all 0.2s ease',
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: !isMini ? 2 : 0,
+                                    justifyContent: 'center',
+                                    color: location.pathname === '/dashboard-vs-fs' ? '#1976d2' : 'inherit',
+                                }}
+                            >
+                                <AssessmentIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Dashboard vs FS" sx={{ opacity: !isMini ? 1 : 0 }} />
+                        </ListItemButton>
+                    </Tooltip>
+                </ListItem>
 
                 <ListItem disablePadding sx={{ display: 'block' }}>
                     <Tooltip title={isMini ? "Resource Link Directory" : ""} placement="right">
