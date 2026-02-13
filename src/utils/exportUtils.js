@@ -11,10 +11,13 @@
 const escapeCsvValue = (value) => {
     if (value === null || value === undefined) return '';
 
-    const stringValue = String(value);
+    let stringValue = String(value);
+
+    // Replace newlines and carriage returns with spaces to prevent row breaks in Excel
+    stringValue = stringValue.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(/\r/g, ' ');
 
     // Check if value contains special characters that require quoting
-    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n') || stringValue.includes('\r')) {
+    if (stringValue.includes(',') || stringValue.includes('"')) {
         // Escape double quotes by doubling them
         const escapedValue = stringValue.replace(/"/g, '""');
         return `"${escapedValue}"`;
@@ -65,9 +68,11 @@ const formatCellValue = (value, field) => {
  * @param {string} filename - Name for the downloaded file (without extension)
  * @param {Function} onProgress - Callback function for progress updates (current, total)
  * @param {Array} columnOrder - Optional array of column field names in desired order
+ * @param {AbortSignal} abortSignal - Optional abort signal to cancel the export
+ * @param {Object} isPausedRef - Optional ref to check if export is paused
  * @returns {Promise<void>}
  */
-export const exportToCSV = async (data, filename, onProgress = null, columnOrder = null) => {
+export const exportToCSV = async (data, filename, onProgress = null, columnOrder = null, abortSignal = null, isPausedRef = null) => {
     return new Promise((resolve, reject) => {
         try {
             if (!data || data.length === 0) {
@@ -91,6 +96,18 @@ export const exportToCSV = async (data, filename, onProgress = null, columnOrder
             let processedRows = 0;
 
             const processChunk = () => {
+                // Check if export was cancelled
+                if (abortSignal?.aborted) {
+                    reject(new Error('Export cancelled by user'));
+                    return;
+                }
+
+                // Check if export is paused - wait and check again
+                if (isPausedRef?.current) {
+                    setTimeout(processChunk, 100);  // Check again in 100ms
+                    return;
+                }
+
                 const endIndex = Math.min(processedRows + chunkSize, totalRows);
 
                 for (let i = processedRows; i < endIndex; i++) {
@@ -125,8 +142,12 @@ export const exportToCSV = async (data, filename, onProgress = null, columnOrder
                     // Join all rows with newline
                     const csvContent = csvRows.join('\n');
 
+                    // Add UTF-8 BOM to ensure proper encoding of special characters
+                    const BOM = '\uFEFF';
+                    const csvWithBOM = BOM + csvContent;
+
                     // Create blob and download
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const blob = new Blob([csvWithBOM], { type: 'text/csv;charset=utf-8;' });
                     const link = document.createElement('a');
 
                     if (navigator.msSaveBlob) {

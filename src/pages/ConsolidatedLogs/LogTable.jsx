@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import {
     Box, Typography, Paper, CircularProgress, Alert, Chip, Tooltip, Stack, MenuItem,
     Select, Divider, useTheme, TextField, TablePagination, InputAdornment, IconButton,
@@ -51,6 +51,9 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
     const [exportProgress, setExportProgress] = useState(0);
     const [exportedRows, setExportedRows] = useState(0);
     const [totalExportRows, setTotalExportRows] = useState(0);
+    const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+    const abortControllerRef = useRef(null);
+    const isPausedRef = useRef(false);  // Track if export is paused
 
     // Memoized Filtering Logic (Status + Incharge + Search)
     const filteredData = useMemo(() => {
@@ -125,6 +128,9 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
             setExportedRows(0);
             setTotalExportRows(filteredData.length);
 
+            // Create abort controller for cancellation
+            abortControllerRef.current = new AbortController();
+
             const filename = generateFilename(type);
 
             // Transform data to use sequential IDs (1, 2, 3...) instead of database IDs
@@ -143,7 +149,9 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                     setExportedRows(current);
                     setExportProgress(progress);
                 },
-                columnOrder  // Pass the column order to match table display
+                columnOrder,  // Pass the column order to match table display
+                abortControllerRef.current.signal,  // Pass abort signal
+                isPausedRef  // Pass pause ref
             );
 
             showNotification(
@@ -152,16 +160,42 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
             );
         } catch (error) {
             console.error('Export Error:', error);
-            showNotification(
-                `Failed to export: ${error.message}`,
-                'error'
-            );
+            if (error.message === 'Export cancelled by user') {
+                showNotification('Export cancelled', 'info');
+            } else {
+                showNotification(
+                    `Failed to export: ${error.message}`,
+                    'error'
+                );
+            }
         } finally {
             setIsExporting(false);
             setExportProgress(0);
             setExportedRows(0);
             setTotalExportRows(0);
+            abortControllerRef.current = null;
         }
+    };
+
+    // Cancel Export Handler - Shows confirmation dialog and pauses export
+    const handleCancelExport = () => {
+        isPausedRef.current = true;  // Pause the export
+        setShowCancelConfirm(true);
+    };
+
+    // Confirm Cancel - Actually abort the export
+    const handleConfirmCancel = () => {
+        isPausedRef.current = false;  // Clear pause flag
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+        setShowCancelConfirm(false);
+    };
+
+    // Resume Export - Close confirmation dialog and continue export
+    const handleResumeExport = () => {
+        isPausedRef.current = false;  // Resume the export
+        setShowCancelConfirm(false);
     };
 
     if (isLoading) {
@@ -979,6 +1013,86 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                         </Typography>
                     </Box>
                 </DialogContent>
+                <Box sx={{ px: 3, pb: 2, display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={handleCancelExport}
+                        sx={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            px: 3,
+                            borderRadius: 2,
+                            textTransform: 'uppercase',
+                            borderWidth: 2,
+                            '&:hover': {
+                                borderWidth: 2,
+                                bgcolor: 'error.dark',
+                                color: 'white'
+                            }
+                        }}
+                    >
+                        Cancel Export
+                    </Button>
+                </Box>
+            </Dialog>
+
+            {/* Cancel Confirmation Dialog */}
+            <Dialog
+                open={showCancelConfirm}
+                onClose={handleResumeExport}
+                maxWidth="xs"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                    }
+                }}
+            >
+                <DialogTitle sx={{ pb: 1 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                        Cancel Export?
+                    </Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                        Are you sure you want to cancel the CSV export?
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+                        Progress will be lost and no file will be downloaded.
+                    </Typography>
+                </DialogContent>
+                <Box sx={{ px: 3, pb: 2, display: 'flex', gap: 1.5, justifyContent: 'flex-end' }}>
+                    <Button
+                        variant="outlined"
+                        onClick={handleResumeExport}
+                        sx={{
+                            fontWeight: 600,
+                            fontSize: '0.75rem',
+                            px: 2.5,
+                            borderRadius: 2,
+                            textTransform: 'uppercase'
+                        }}
+                    >
+                        No, Continue
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleConfirmCancel}
+                        sx={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            px: 2.5,
+                            borderRadius: 2,
+                            textTransform: 'uppercase',
+                            boxShadow: '0 2px 8px rgba(211, 47, 47, 0.3)'
+                        }}
+                    >
+                        Yes, Cancel
+                    </Button>
+                </Box>
             </Dialog>
         </Box>
     );
