@@ -411,6 +411,7 @@ export const submitLog = async (req, res, next) => {
                         'opndivregarea': 'opndivregarea_temp' // Marker to identify hierarchy line
                     };
 
+                    // Map to target key
                     const targetKey = fieldMapping[lowerKey] || null;
 
                     if (!targetKey) {
