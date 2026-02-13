@@ -1,0 +1,57 @@
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 0: 3 (Total lines: 3)
+Seg 1 Line 6 Key: "Branch Name" -> "branch_name"
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 1: 24 (Total lines: 24)
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 2: 21 (Total lines: 21)
+Seg 3 Line 6 Key: "Branch Name" -> "branch_name"
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 3: 25 (Total lines: 25)
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 4: 22 (Total lines: 22)
+Seg 5 Line 4 Key: "Op'n-Div-Reg-Area" -> "opndivregarea"
+ANCHOR_KEYS: [
+  'date_of_request',
+  'date',
+  'branch_code',
+  'concern_category',
+  'staff_name',
+  'client_reference'
+]
+firstAnchor for Seg 5: 26 (Total lines: 26)

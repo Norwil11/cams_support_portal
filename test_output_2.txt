@@ -1,0 +1,61 @@
+Original Input Length: 3114
+Matched Segments: 8
+
+--- SEGMENT 1 ---
+Good Day Sir/Ma'am;
+    
+Date of Request: February...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 2 ---
+Good Day Sir/Ma'am;
+    
+Date of Request: February...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 3 ---
+Good evening Sir/Ma'am;
+    
+Date of Request: Febr...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 4 ---
+Good evening Sir/Ma'am;
+    
+Date of Request: Febr...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 5 ---
+Good morning Sir/Ma'am;
+    
+Date of Request: Febr...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 6 ---
+Good Morning Sir/Ma'am;
+    
+Date of Request: Febr...
+Type: staffAccess
+Fields detected: Subject, Date_of_Request, OpnDivRegArea, Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 7 ---
+**Daily CAMS Concern/Issue**
+    
+    
+...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 8 ---
+Good evening Sir/Ma'am;
+
+Date: February 11,2026
+
+B...
+Type: dailyCAMSConcerns
+Fields detected: Subject, Date, Branch_Code, Branch_Name, Concern, Bank_withdrawal, Bank_deposit, Concerning_Staff, Designation, Remarks

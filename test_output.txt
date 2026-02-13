@@ -1,0 +1,160 @@
+Original Input Length: 3114
+Matched Segments: 21
+
+--- SEGMENT 1 ---
+Good Day Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 2 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 3 ---
+
+Branch Code: B1614
+Branch Name: Samal City III 
+
+...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 4 ---
+Good Day Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 5 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 6 ---
+
+Branch Code: B1614
+Branch Name: Samal City III 
+
+...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 7 ---
+Good evening Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 8 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 9 ---
+
+Branch Code: B0848
+Branch Name: Montevista
+
+Conce...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 10 ---
+Good evening Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 11 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 12 ---
+
+Branch Code: B0848
+Branch Name: Montevista
+
+Conce...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 13 ---
+Good morning Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 14 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 15 ---
+
+Branch Code: B1615
+Branch Name: Tagum city IV
+
+Co...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 16 ---
+Good Morning Sir/Ma'am;
+    ...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 17 ---
+
+Date of Request: February 12, 2026
+
+Op'n-Div-Reg-...
+Type: null
+Fields detected: Date_of_Request, OpnDivRegArea
+
+--- SEGMENT 18 ---
+
+Branch Code: B0710
+Branch Name: Asuncion 
+
+Concer...
+Type: staffAccess
+Fields detected: Branch_Code, Branch_Name, Concern_Category, Concern_Details, Concerning_Staff, Staff_Name, ID_Number, Corporate_Email, Birthdate, Contact_Number, Assigned_As, Remarks
+
+--- SEGMENT 19 ---
+Good evening Sir/Ma'am;
+...
+Type: null
+Fields detected: Subject
+
+--- SEGMENT 20 ---
+
+Date: February 11,2026
+...
+Type: null
+Fields detected: Date
+
+--- SEGMENT 21 ---
+
+Branch Code: B1669
+Branch Name: Davao City XXII (...
+Type: dailyCAMSConcerns
+Fields detected: Branch_Code, Branch_Name, Concern, Bank_withdrawal, Bank_deposit, Concerning_Staff, Designation, Remarks

@@ -1,0 +1,37 @@
+# Support Log Regex Patterns
+
+## Header Identification
+- `CAMS Reopen & Devs Adjustment Log`: `/--\|\| CAMS Reopen & Devs Adjustment Log \|\|--/i`
+- `Daily CAMS Concern`: `/--\|\| Daily CAMS Concern \|\|--/i`
+- `CAMS Adjustment`: `/--\|\| CAMS Adjustment \|\|--/i`
+- `Staff Access`: `/--\|\| Staff Access \|\|--/i`
+
+## Field Extraction (Generic pattern: `Field Name:\s*(.*)`)
+- `Subject`
+- `Op'n-Div-Reg-Area`
+- `Branch Code`
+- `Branch Name`
+- `Adjustment Point`
+- `Date of Request`
+- `Time of Request`
+- `Requested By`
+- `Concern Category`
+- `Reason`
+- `Recommended By`
+- `Remarks`
+- `Date` (for Daily CAMS)
+- `Concern`
+- `Concerning Staff`
+- `Designation`
+- `Client Reference`
+- `Client Name`
+- `Name of MFO`
+- `MFO`
+- `Group`
+- `Concern Details`
+- `Staff Name`
+- `ID Number`
+- `Corporate Email`
+- `Birthdate`
+- `Contact Number`
+- `Assigned As`

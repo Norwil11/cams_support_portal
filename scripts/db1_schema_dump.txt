@@ -1,0 +1,6 @@
+areas: id, area_name, division_id, region_id, status, date_created, created_by, date_updated, updated_by
+regions: id, region, division_id, status, date_created, created_by, date_updated, updated_by
+divisions: id, division, operation_id, status, date_created, created_by, date_updated, updated_by, in_charge
+operations: id, name, status, date_created, created_by, date_updated, updated_by
+responsible_incharge: id, firstName, middleName, lastName, division_id, role, created_by, date_created, date_updated, updated_by
+branches: id, branch_no, branch_type_id, area_id, branch_name, address, zip_code, date_started, type, status, branch_id, tin_number, program_type, created_at, updated_at, created_by, updated_by

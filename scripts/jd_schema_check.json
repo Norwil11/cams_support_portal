@@ -1,0 +1,202 @@
+{
+  "jd_incharge_schema": [
+    {
+      "Field": "id",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": null,
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "firstname",
+      "Type": "varchar(100)",
+      "Null": "NO",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "middlename",
+      "Type": "varchar(100)",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "lastname",
+      "Type": "varchar(100)",
+      "Null": "NO",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "operation_id",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "date_created",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED"
+    },
+    {
+      "Field": "created_by",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "date_updated",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+    },
+    {
+      "Field": "updated_by",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    }
+  ],
+  "jd_incharge_data": [
+    {
+      "id": 1,
+      "firstname": "Francis Harvey",
+      "middlename": "Miralles",
+      "lastname": "Barcos",
+      "operation_id": 1,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    },
+    {
+      "id": 2,
+      "firstname": "Rodel",
+      "middlename": "Dunton",
+      "lastname": "Peligro",
+      "operation_id": 2,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    },
+    {
+      "id": 3,
+      "firstname": "Carlo",
+      "middlename": "Varona",
+      "lastname": "Gayatao",
+      "operation_id": 3,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    },
+    {
+      "id": 4,
+      "firstname": "Norwil",
+      "middlename": "Labbao",
+      "lastname": "Cabrito",
+      "operation_id": 4,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    },
+    {
+      "id": 5,
+      "firstname": "Norwil",
+      "middlename": "Labbao",
+      "lastname": "Cabrito",
+      "operation_id": 5,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    },
+    {
+      "id": 6,
+      "firstname": "Carlo",
+      "middlename": "Varona",
+      "lastname": "Gayatao",
+      "operation_id": 6,
+      "date_created": "2026-01-23T06:35:37.000Z",
+      "created_by": null,
+      "date_updated": "2026-01-23T06:35:37.000Z",
+      "updated_by": null
+    }
+  ],
+  "operations_schema": [
+    {
+      "Field": "id",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": null,
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "name",
+      "Type": "varchar(100)",
+      "Null": "NO",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "status",
+      "Type": "tinyint",
+      "Null": "NO",
+      "Key": "",
+      "Default": "1",
+      "Extra": ""
+    },
+    {
+      "Field": "date_created",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED"
+    },
+    {
+      "Field": "created_by",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "date_updated",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP"
+    },
+    {
+      "Field": "updated_by",
+      "Type": "int",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    }
+  ]
+}

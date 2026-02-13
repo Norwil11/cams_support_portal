@@ -1,0 +1,4 @@
+staff_access:["id","time_log","date_of_request","branch_code","concern_category","concern_details","concerning_staff","staff_name","id_number","corporate_email","remarks","responsible_incharge","jd_incharge","reason","status","updated_at"]
+cams_adjustment:["id","time_log","date_of_request","branch_code","concern_category","concerning_staff","client_reference","client_name","name_of_mfo","mfo","group_name","remarks","responsible_incharge","jd_incharge","reason","status","updated_at"]
+cams_reopen:["id","time_log","date_of_request","branch_code","time_of_request","adjustment_point","requested_by","reopen_category","reason_for_reopening","recommended_by","remarks","responsible_incharge","jd_incharge","reason","status","updated_at"]
+daily_cams_concern:["id","time_log","date","branch_code","concern_issue","concerning_staff","designation","remarks","responsible_incharge","jd_incharge","reason","status","updated_at"]

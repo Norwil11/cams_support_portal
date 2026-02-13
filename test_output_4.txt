@@ -1,0 +1,36 @@
+Matched Segments: 7
+
+--- SEGMENT 1 ---
+Remarks: [None]
+Subject: [Good Day Sir/Ma'am;]
+Staff Name: [Denny Bansag]
+
+--- SEGMENT 2 ---
+Remarks: [Leave of Staff]
+Subject: [Good Day Sir/Ma'am;]
+Staff Name: [Marie Joy Ocho]
+
+--- SEGMENT 3 ---
+Remarks: [The staff is already resume from leave.]
+Subject: [Good evening Sir/Ma'am;]
+Staff Name: [Princess Ciarra Abio]
+
+--- SEGMENT 4 ---
+Remarks: [The staff is already resume from leave.]
+Subject: [Good evening Sir/Ma'am;]
+Staff Name: [Flaviano Leparto]
+
+--- SEGMENT 5 ---
+Remarks: [The  staff is on leave.]
+Subject: [Good morning Sir/Ma'am;]
+Staff Name: [Honey Rose Caballo]
+
+--- SEGMENT 6 ---
+Remarks: [Mfo is on leave]
+Subject: [Good Morning Sir/Ma'am;]
+Staff Name: [Arjane Mae Maboloc]
+
+--- SEGMENT 7 ---
+Remarks: []
+Subject: [Daily CAMS Concern/Issue]
+Staff Name: [undefined]
