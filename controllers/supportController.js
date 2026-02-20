@@ -203,6 +203,90 @@ export const getIncharges = async (req, res, next) => {
     }
 };
 
+// ── Admin CRUD ────────────────────────────────────────────────────────────────
+
+export const getAllInchargesAdmin = async (req, res, next) => {
+    try {
+        const incharges = await ResponsibleIncharge.findAll({
+            include: [{
+                model: Division,
+                include: [{ model: OperationDB1, as: 'operation' }]
+            }],
+            order: [
+                [Division, 'division', 'ASC'],
+                ['lastName', 'ASC'],
+                ['firstName', 'ASC']
+            ]
+        });
+        res.json(incharges);
+    } catch (error) {
+        logger.error(`Error fetching admin incharges: ${error.message}`);
+        next(error);
+    }
+};
+
+export const getAllDivisions = async (req, res, next) => {
+    try {
+        const divisions = await Division.findAll({ order: [['division', 'ASC']] });
+        res.json(divisions);
+    } catch (error) {
+        logger.error(`Error fetching divisions: ${error.message}`);
+        next(error);
+    }
+};
+
+export const createIncharge = async (req, res, next) => {
+    try {
+        const { firstName, lastName, division_id, role } = req.body;
+        if (!firstName || !lastName) {
+            return res.status(400).json({ error: 'firstName and lastName are required.' });
+        }
+        const record = await ResponsibleIncharge.create({
+            firstName,
+            lastName,
+            division_id: division_id || null,
+            role: role || null
+        });
+        res.status(201).json(record);
+    } catch (error) {
+        logger.error(`Error creating incharge: ${error.message}`);
+        next(error);
+    }
+};
+
+export const updateIncharge = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { firstName, lastName, division_id, role } = req.body;
+        const record = await ResponsibleIncharge.findByPk(id);
+        if (!record) return res.status(404).json({ error: 'Incharge not found.' });
+        await record.update({
+            firstName,
+            lastName,
+            division_id: division_id || null,
+            role: role || null
+        });
+        res.json(record);
+    } catch (error) {
+        logger.error(`Error updating incharge: ${error.message}`);
+        next(error);
+    }
+};
+
+export const deleteIncharge = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const record = await ResponsibleIncharge.findByPk(id);
+        if (!record) return res.status(404).json({ error: 'Incharge not found.' });
+        await record.destroy();
+        res.json({ message: 'Deleted successfully.' });
+    } catch (error) {
+        logger.error(`Error deleting incharge: ${error.message}`);
+        next(error);
+    }
+};
+
+
 /**
  * Automatically find the JD Incharge based on branch number
  * Path: branches -> areas -> divisions -> operations -> in_charge

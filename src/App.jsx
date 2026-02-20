@@ -16,6 +16,8 @@ import CamsReopen from './pages/ConsolidatedLogs/CamsReopen';
 import DailyCamsConcerns from './pages/ConsolidatedLogs/DailyCamsConcerns';
 
 import ResourceDirectory from './pages/ResourceDirectory';
+import InchargeRegistry from './pages/Admin/InchargeRegistry';
+import AdminGuard from './pages/Admin/AdminGuard';
 import { CssBaseline } from '@mui/material';
 import { ColorModeProvider } from './theme/ThemeContext';
 import { NotificationProvider } from './contexts/NotificationContext';
@@ -45,6 +47,14 @@ function App() {
               </Route>
 
               <Route path="resources" element={<ResourceDirectory />} />
+              <Route
+                path="admin/incharge-registry"
+                element={
+                  <AdminGuard>
+                    <InchargeRegistry />
+                  </AdminGuard>
+                }
+              />
             </Route>
           </Routes>
         </Router>

@@ -6,6 +6,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import StorageIcon from '@mui/icons-material/Storage';
 import SecurityIcon from '@mui/icons-material/Security';
+import VideocamIcon from '@mui/icons-material/Videocam';
 import './ResourceDirectory.css';
 
 const APPSHEET_GALLERY_DATA = [
@@ -56,6 +57,14 @@ const APPSHEET_GALLERY_DATA = [
         link: "https://www.appsheet.com/start/173468f2-c4b5-4cd9-b861-96694a5965da",
         icon: <SecurityIcon />,
         color: '#0288d1'
+    },
+    {
+        category: "AppSheet Links",
+        name: "IT CCTV Monitoring",
+        description: "Continuously observing and maintaining CCTV systems to ensure cameras work properly, footage is recorded correctly, and any security incidents are detected and reported quickly.",
+        link: "https://www.appsheet.com/start/20084182-7bd6-40ca-be5e-c43ed4a9a3c3",
+        icon: <VideocamIcon />,
+        color: '#00695c'
     }
 ];
 

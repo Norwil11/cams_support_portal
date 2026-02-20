@@ -13,6 +13,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -45,6 +46,10 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
 
     // Inline Editing State (Standard Table Replacement)
     const [editCell, setEditCell] = useState(null); // { id, field }
+
+    // Delay Cause Dialog Editor State
+    const [delayCauseEditor, setDelayCauseEditor] = useState(null); // { id, value }
+    const [delayCauseDraft, setDelayCauseDraft] = useState('');
 
     // CSV Export State
     const [isExporting, setIsExporting] = useState(false);
@@ -811,7 +816,10 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                                                 key={col.field}
                                                 align={col.align || 'center'}
                                                 onDoubleClick={() => {
-                                                    if (col.editable) {
+                                                    if (col.field === 'delay_cause') {
+                                                        setDelayCauseDraft(value || '');
+                                                        setDelayCauseEditor({ id: row.id, value: value || '' });
+                                                    } else if (col.editable) {
                                                         setEditCell({ id: row.id, field: col.field });
                                                     }
                                                 }}
@@ -835,14 +843,13 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                                                 }}
                                             >
                                                 {isEditing ? (
-                                                    // Render custom editor or standard Select/TextField
+                                                    // Render custom editor (status dropdown)
                                                     col.renderEditCell ? col.renderEditCell({
                                                         id: row.id,
                                                         field: col.field,
                                                         value: value,
                                                         api: {
                                                             setEditCellValue: ({ value }) => {
-                                                                // Handle update
                                                                 updateMutation.mutate({ id: row.id, field: col.field, value });
                                                             },
                                                             stopCellEditMode: () => setEditCell(null)
@@ -905,6 +912,202 @@ export default function LogTable({ title, type, data = [], isLoading, isError, e
                     </Table>
                 </TableContainer>
             </Paper>
+
+            {/* ── Delay Cause Editor Dialog ── */}
+            <Dialog
+                open={!!delayCauseEditor}
+                onClose={() => setDelayCauseEditor(null)}
+                maxWidth="sm"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        borderRadius: 3,
+                        background: isDarkMode
+                            ? 'linear-gradient(145deg, #1e2433 0%, #252d3d 100%)'
+                            : 'linear-gradient(145deg, #ffffff 0%, #f8faff 100%)',
+                        boxShadow: '0 24px 60px rgba(0,0,0,0.18)',
+                        overflow: 'hidden'
+                    }
+                }}
+            >
+                {/* Coloured top bar */}
+                <Box sx={{
+                    height: 4,
+                    background: 'linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)'
+                }} />
+
+                <DialogTitle sx={{ pb: 0, pt: 2.5, px: 3 }}>
+                    <Stack direction="row" spacing={1.5} alignItems="center">
+                        <Box sx={{
+                            width: 36, height: 36,
+                            borderRadius: '10px',
+                            bgcolor: 'rgba(25,118,210,0.1)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <NoteAltIcon sx={{ fontSize: '1.2rem', color: 'primary.main' }} />
+                        </Box>
+                        <Box>
+                            <Typography variant="h6" sx={{ fontWeight: 800, fontSize: '1rem', lineHeight: 1.2 }}>
+                                Edit Delay Cause
+                            </Typography>
+                            {delayCauseEditor && (
+                                <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.7rem' }}>
+                                    Row ID #{delayCauseEditor.id}
+                                </Typography>
+                            )}
+                        </Box>
+                    </Stack>
+                </DialogTitle>
+
+                <DialogContent sx={{ px: 3, pt: 2, pb: 1 }}>
+                    <Box sx={{
+                        mt: 1,
+                        border: '2px solid',
+                        borderColor: 'primary.main',
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                        boxShadow: '0 0 0 4px rgba(25,118,210,0.08)',
+                        transition: 'box-shadow 0.2s ease'
+                    }}>
+                        <TextField
+                            autoFocus
+                            multiline
+                            minRows={4}
+                            maxRows={10}
+                            fullWidth
+                            value={delayCauseDraft}
+                            onChange={(e) => setDelayCauseDraft(e.target.value)}
+                            placeholder="Describe the delay cause in detail..."
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && e.ctrlKey) {
+                                    e.preventDefault();
+                                    const newVal = delayCauseDraft.trim();
+                                    const oldVal = (delayCauseEditor?.value || '').trim();
+                                    if (newVal !== oldVal) {
+                                        updateMutation.mutate({ id: delayCauseEditor.id, field: 'delay_cause', value: delayCauseDraft });
+                                    }
+                                    setDelayCauseEditor(null);
+                                } else if (e.key === 'Escape') {
+                                    setDelayCauseEditor(null);
+                                }
+                            }}
+                            variant="standard"
+                            InputProps={{ disableUnderline: true }}
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    px: 2,
+                                    py: 1.5,
+                                    fontSize: '0.875rem',
+                                    lineHeight: 1.7,
+                                    color: 'text.primary',
+                                    bgcolor: 'transparent',
+                                    resize: 'none'
+                                },
+                                '& .MuiInputBase-input::placeholder': {
+                                    color: 'text.disabled',
+                                    opacity: 1
+                                }
+                            }}
+                        />
+                    </Box>
+
+                    {/* Character count + hint */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1, px: 0.5 }}>
+                        <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.7rem' }}>
+                            <Box component="kbd" sx={{
+                                bgcolor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                borderRadius: '4px',
+                                px: 0.6,
+                                py: 0.2,
+                                fontSize: '0.65rem',
+                                fontFamily: 'monospace',
+                                mr: 0.5
+                            }}>Ctrl+Enter</Box>
+                            to save &nbsp;·&nbsp;
+                            <Box component="kbd" sx={{
+                                bgcolor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                                borderRadius: '4px',
+                                px: 0.6,
+                                py: 0.2,
+                                fontSize: '0.65rem',
+                                fontFamily: 'monospace',
+                                mr: 0.5
+                            }}>Esc</Box>
+                            to cancel
+                        </Typography>
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                color: delayCauseDraft.length > 400 ? 'error.main' : 'text.disabled'
+                            }}
+                        >
+                            {delayCauseDraft.length} chars
+                        </Typography>
+                    </Box>
+                </DialogContent>
+
+                {/* Action Buttons */}
+                <Box sx={{
+                    px: 3, pb: 2.5, pt: 1,
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: 1.5,
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                    mt: 1
+                }}>
+                    <Button
+                        variant="outlined"
+                        onClick={() => setDelayCauseEditor(null)}
+                        sx={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            px: 2.5,
+                            borderRadius: 2,
+                            textTransform: 'none',
+                            borderColor: 'divider',
+                            color: 'text.secondary',
+                            '&:hover': { borderColor: 'text.secondary', bgcolor: 'action.hover' }
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            const newVal = delayCauseDraft.trim();
+                            const oldVal = (delayCauseEditor?.value || '').trim();
+                            if (newVal !== oldVal) {
+                                updateMutation.mutate({ id: delayCauseEditor.id, field: 'delay_cause', value: delayCauseDraft });
+                            }
+                            setDelayCauseEditor(null);
+                        }}
+                        sx={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            px: 3,
+                            borderRadius: 2,
+                            textTransform: 'none',
+                            background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
+                            boxShadow: '0 4px 12px rgba(25,118,210,0.35)',
+                            '&:hover': {
+                                background: 'linear-gradient(135deg, #1565c0 0%, #0d47a1 100%)',
+                                boxShadow: '0 6px 16px rgba(25,118,210,0.45)',
+                                transform: 'translateY(-1px)'
+                            },
+                            transition: 'all 0.2s ease'
+                        }}
+                    >
+                        Save
+                    </Button>
+                </Box>
+            </Dialog>
 
             {/* CSV Export Progress Dialog */}
             <Dialog

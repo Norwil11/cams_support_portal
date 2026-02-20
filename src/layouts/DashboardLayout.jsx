@@ -20,6 +20,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useColorMode } from '../theme/ThemeContext';
 import { Fab, Zoom, useScrollTrigger } from '@mui/material';
@@ -105,7 +106,7 @@ function DashboardLayout(props) {
     ];
 
     const renderDrawer = (isMini) => (
-        <Box sx={{ overflowX: 'hidden' }}>
+        <Box sx={{ overflowX: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Toolbar sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -399,6 +400,60 @@ function DashboardLayout(props) {
                     </Tooltip>
                 </ListItem>
             </List>
+
+            {/* ── Bottom Admin Section ── */}
+            <Box sx={{ mt: 'auto' }}>
+                <Divider />
+                <List sx={{ py: 0.5 }}>
+                    <ListItem disablePadding sx={{ display: 'block' }}>
+                        <Tooltip title={isMini ? 'Admin Controls' : ''} placement="right">
+                            <ListItemButton
+                                selected={location.pathname.startsWith('/admin')}
+                                onClick={() => {
+                                    if (mobileOpen) setMobileOpen(false);
+                                    navigate('/admin/incharge-registry');
+                                }}
+                                sx={{
+                                    minHeight: !isMini ? 44 : 40,
+                                    py: 0.5,
+                                    justifyContent: !isMini ? 'initial' : 'center',
+                                    px: !isMini ? 2.5 : 1.5,
+                                    mx: !isMini ? 0 : 0.8,
+                                    borderRadius: !isMini ? 0 : '12px',
+                                    '&.Mui-selected': {
+                                        backgroundColor: (theme) => theme.palette.mode === 'light'
+                                            ? 'rgba(156, 39, 176, 0.08)'
+                                            : 'rgba(156, 39, 176, 0.15)',
+                                        borderRight: !isMini ? '4px solid #9c27b0' : 'none',
+                                        '&:hover': {
+                                            backgroundColor: (theme) => theme.palette.mode === 'light'
+                                                ? 'rgba(156, 39, 176, 0.12)'
+                                                : 'rgba(156, 39, 176, 0.2)',
+                                        }
+                                    },
+                                    transition: 'all 0.2s ease',
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: !isMini ? 2 : 0,
+                                        justifyContent: 'center',
+                                        color: location.pathname.startsWith('/admin') ? '#9c27b0' : 'inherit',
+                                    }}
+                                >
+                                    <AdminPanelSettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="Admin Controls"
+                                    sx={{ opacity: !isMini ? 1 : 0 }}
+                                    primaryTypographyProps={{ fontSize: '0.85rem', fontWeight: 500 }}
+                                />
+                            </ListItemButton>
+                        </Tooltip>
+                    </ListItem>
+                </List>
+            </Box>
         </Box>
     );
 

@@ -17,7 +17,11 @@ const ResponsibleIncharge = sequelizeDB1.define('ResponsibleIncharge', {
     },
     division_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true   // null = cluster head (handles an operation, not a specific division)
+    },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: 'responsible_incharge',
